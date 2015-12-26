@@ -34,7 +34,8 @@
     "multipipe": "^0.1.1",
     "reactify": "^0.17.1",
     "tiny-lr": "0.0.5",
-    "vinyl-transform": "0.0.1"
+    "vinyl-transform": "0.0.1",
+    "lodash": "3.10.1"
   },
   "dependencies": {
     "flux": "^2.0.1",

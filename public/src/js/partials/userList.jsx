@@ -1,80 +1,35 @@
 var utils = require('../utils');
 
+var MessagesStore = require('../stores/messages')
 var UserStore = require('../stores/user');
+
+var _ = require('lodash');
 
 var UserList = React.createClass({
 	getInitialState: function () {
-		return {
-			openChatID: 0,
-			messageList: [
-				{
-					lastMessage: {
-						contents: 'Hey, what\'s up?',
-						from: 1,
-						timestamp: 1424469794000
-					},
-					lastAccess: {
-						recipient: 1424469794050,
-						currentUser: 1424469794080
-					},
-					user: {
-						profilePicture: 'https://avatars0.githubusercontent.com/u/7922109?v=3&s=460',
-						id: 2,
-						name: 'Ryan Clark',
-						status: 'online'
-					}
-				},
-				{
-					lastMessage: {
-						contents: 'Want a game of ping pong?',
-						from: 3,
-						timestamp: 1424352522000
-					},
-					lastAccess: {
-						recipient: 1424352522000,
-						currentUser: 1424352522080
-					},
-					user: {
-						read: true,
-						profilePicture: 'https://avatars3.githubusercontent.com/u/2955483?v=3&s=460',
-						name: 'Jilles Soeters',
-						id: 3,
-						status: 'online'
-					}
-				},
-				{
-					lastMessage: {
-						contents: 'Please follow me on twitter I\'ll pay you',
-						timestamp: 1424423579000,
-						from: 4
-					},
-					lastAccess: {
-						recipient: 1424423579000,
-						currentUser: 1424423574000
-					},
-					user: {
-						name: 'Todd Motto',
-						id: 4,
-						profilePicture: 'https://avatars1.githubusercontent.com/u/1655968?v=3&s=460',
-						status: 'online'
-					}
-				}
-			]
-		}
+    var allMessages = MessagesStore.getAllChats();
+    var messageList = _.map(allMessages, function(item, id) {
+      return {
+        lastMessage: _.last(item.messages),
+        lastAccess: item.lastAccess,
+        user: item.user
+      };
+    });
+
+    return {
+        openChatID: MessagesStore.getOpenChatUserID(),
+        messageList: messageList
+    };
 	},
 	render: function () {
 		this.state.messageList.sort(function (a, b) {
-			if (a.lastMessage.timestamp > b.lastMessage.timestamp) {
-				return -1;
-			}
-			if (a.lastMessage.timestamp < b.lastMessage.timestamp) {
-				return 1;
-			}
+			if (a.lastMessage.timestamp > b.lastMessage.timestamp) return -1;
+			if (a.lastMessage.timestamp < b.lastMessage.timestamp) return 1;
 			return 0;
 		});
 
 		var messages = this.state.messageList.map(function (message, index) {
-			var date = utils.getNiceDate(message.lastMessage.timestamp);
+			var date = utils.getShortDate(message.lastMessage.timestamp);
 
 			var statusIcon;
 			if (message.lastMessage.from !== message.user.id) {

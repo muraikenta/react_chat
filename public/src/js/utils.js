@@ -28,7 +28,7 @@ var utils = {
 			2879: 'Yesterday at %h:%i',
 			14567: '%l at %h:%i',
 		};
-		var days = ['Sunday', 'Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+		var days = ['Sun', 'Mon','Tue','Wed','Thu','Fri','Sat'];
 		var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
 		var date = new Date(timestamp);
